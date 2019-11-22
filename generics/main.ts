@@ -1,10 +1,36 @@
-// 函数
+// 函数动态设定类型
+function log<T>(item: T): T {
+  console.log(item);
+  return item;
+}
 
-const count = 1;
+const a1 = log(233); // 233
+const a2 = log(Math.random()); // number
+const a3 = log(Symbol("233")); // symbol
 
-function countFuncCalled(func: (...args: any[]) => any) {}
+function getFirstItem<T>(list: T[]): T | null {
+  return list.length > 0 ? list[0] : null;
+}
 
+const a4 = getFirstItem([3]); // number
+
+/** 投放计划 */
+class Plan {
+  id: number;
+  date: string;
+}
+
+const planList: Plan[] = [
+  { id: 0, date: "2019/1/1" },
+  { id: 1, date: "2019/1/2" }
+];
+
+const a5 = getFirstItem(planList); // Plan
+
+//
 // 包装类
+
+// Vue3源码中的容器类
 class Ref<T> {
   isRef: boolean;
   value: T;
@@ -17,8 +43,8 @@ function ref<T>(value: T): Ref<T> {
   };
 }
 
-const a = ref(20); // Ref<number>
-const b = ref("233"); // Ref<string>
+const b1 = ref(20); // Ref<number>
+const b2 = ref("233"); // Ref<string>
 
 // 类型签名
 function getJSON<T>(config: {
@@ -36,4 +62,17 @@ function getJSON<T>(config: {
   );
 }
 
-const c = getJSON<number>({ url: "abc.com" }); // Promise<number>
+const c1 = getJSON<number>({ url: "abc.com" }); // Promise<number>
+
+// 类型推断
+
+type D1 = <T>(
+  arg: T
+) => T extends string ? string : T extends number ? number : any;
+
+// 实现类型
+const getType: D1 = function(params: any) {
+  if (typeof params === "string") return Math.random().toString();
+  if (typeof params === "number") return Math.random();
+  return params;
+};

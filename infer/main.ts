@@ -7,6 +7,40 @@ type DateFormat = (date: string | Date) => string;
 
 type AnyFunc = () => undefined;
 
-type T0 = ReturnType<Sub>; // number
-type T1 = ReturnType<DateFormat>; // string
-type T2 = ReturnType<AnyFunc>; // undefined
+type A0 = ReturnType<Sub>; // number
+type A1 = ReturnType<DateFormat>; // string
+type A2 = ReturnType<AnyFunc>; // undefined
+
+interface Ref<T = any> {
+  _isRef: true;
+  value: UnwrapRef<T>;
+}
+
+type CollectionTypes = IterableCollections | WeakCollections;
+
+type IterableCollections = Map<any, any> | Set<any>;
+type WeakCollections = WeakMap<any, any> | WeakSet<any>;
+
+type UnwrapRef<T> = {
+  ref: T extends Ref<infer V> ? UnwrapRef<V> : T;
+  array: T extends Array<infer V> ? Array<UnwrapRef<V>> : T;
+  object: { [K in keyof T]: UnwrapRef<T[K]> };
+}[T extends Ref
+  ? "ref"
+  : T extends Array<any>
+  ? "array"
+  : T extends Function | CollectionTypes
+  ? "ref" // bail out on types that shouldn't be unwrapped
+  : T extends object
+  ? "object"
+  : "ref"];
+
+type B0 = UnwrapRef<number>; // number
+type B1 = UnwrapRef<Ref<number>>; // number
+type B2 = UnwrapRef<Array<Ref<string>>>; // string[]
+type B3 = UnwrapRef<{ name: string; age: Ref<number> }>; // {name: string;age: number;}
+type B4 = UnwrapRef<Map<string, number>>;
+
+type ParamsType<T> = T extends (...args: infer V) => any ? V : any;
+
+type C0 = ParamsType<(name: string, age: number) => void>; // (name: string, age: number) => void

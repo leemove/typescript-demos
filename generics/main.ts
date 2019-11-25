@@ -27,7 +27,6 @@ const planList: Plan[] = [
 
 const a5 = getFirstItem(planList); // Plan
 
-//
 // 包装类
 
 // Vue3源码中的容器类
@@ -76,3 +75,22 @@ const getType: D1 = function(params: any) {
   if (typeof params === "number") return Math.random();
   return params;
 };
+
+type WarpRef<T> = {
+  string: Ref<string>;
+  number: Ref<number>;
+  date: Ref<Date>;
+  any: Ref<any>;
+}[T extends string
+  ? "string"
+  : T extends number
+  ? "number"
+  : T extends Date
+  ? "date"
+  : "any"];
+
+type F1 = WarpRef<string>; // Ref<string>
+type F2 = WarpRef<number>; // Ref<number>
+type F3 = WarpRef<Date>; // Ref<Date>
+type F4 = WarpRef<string[]>; // Ref<Date>
+type F5 = WarpRef<string[]>; // type F5 = Ref<any>

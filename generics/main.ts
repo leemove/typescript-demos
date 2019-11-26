@@ -18,11 +18,12 @@ const a4 = getFirstItem([3]); // number
 class Plan {
   id: number;
   date: string;
+  spell: number;
 }
 
 const planList: Plan[] = [
-  { id: 0, date: "2019/1/1" },
-  { id: 1, date: "2019/1/2" }
+  { id: 0, date: "2019/1/1", spell: 2 },
+  { id: 1, date: "2019/1/2", spell: 2 }
 ];
 
 const a5 = getFirstItem(planList); // Plan
@@ -94,3 +95,8 @@ type F2 = WarpRef<number>; // Ref<number>
 type F3 = WarpRef<Date>; // Ref<Date>
 type F4 = WarpRef<string[]>; // Ref<Date>
 type F5 = WarpRef<string[]>; // type F5 = Ref<any>
+
+// type Pick<T, K extends keyof T> = {
+//   [P in K]: T[P];
+// };
+type person5 = Pick<Plan, "date" | "spell">;

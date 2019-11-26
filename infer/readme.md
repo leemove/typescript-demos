@@ -52,4 +52,10 @@ type UnwrapRef<T> = {
   ? "object"
   : "ref"];
 
+type B0 = UnwrapRef<number>; // number
+type B1 = UnwrapRef<Ref<number>>; // number
+type B2 = UnwrapRef<Array<Ref<string>>>; // string[]
+type B3 = UnwrapRef<{ name: string; age: Ref<number> }>; // {name: string;age: number;}
+type B4 = UnwrapRef<Map<string, number>>;
+
 ```

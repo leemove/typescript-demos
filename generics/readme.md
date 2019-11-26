@@ -99,7 +99,7 @@ const b1 = ref(20); // Ref<number>
 const b2 = ref("233"); // Ref<string>
 ```
 
-## 类型推断
+## 有条件类型(类型推断)
 
 可以根据泛型的基类进行类型推断,来定义其他类型.`T extends string ? string : number`类似于三元表达式,如果泛型基于string则该类型为string否则为number.
 
@@ -114,6 +114,21 @@ const getType: D1 = function(params: any) {
   if (typeof params === "number") return Math.random();
   return params;
 };
+```
+
+配合映射类型
+
+```ts
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+type person5 = Pick<Plan, "date"|"spell">;
+/**
+  {
+    date: string;
+    spell: number;
+  }
+/*
 ```
 
 ## 用于类型声明推倒(计算?)

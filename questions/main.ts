@@ -20,26 +20,32 @@ class EffectModule {
   }
 }
 
-type FunctionPropertyNames<T> = {
-  [K in keyof T]: T[K] extends Function ? K : undefined;
-}[keyof T];
 
-
-type resolveEffectModuleFunc<T> = T extends (
-  input: Promise<infer U>
-) => Promise<Action<infer V>>
-  ? (input: U) => Action<V>
-  : T extends (action: Action<infer U>) => Action<infer V>
-  ? (action: U) => Action<V>
-  : never;
 // 修改 Connect 的类型，让 connected 的类型变成预期的类型
-type Connect = (
-  module: EffectModule
-) => {
-  [T in FunctionPropertyNames<EffectModule>]: resolveEffectModuleFunc<
-    EffectModule[T]
-  >;
-};
+type Connect = (module:EffectModule ) => any
+
+
+
+// type Connect = (
+//   module: EffectModule
+// ) => {
+//   [T in FunctionPropertyNames<EffectModule>]: resolveEffectModuleFunc<
+//     EffectModule[T]
+//   >;
+// };
+
+// type FunctionPropertyNames<T> = {
+//   [K in keyof T]: T[K] extends Function ? K : undefined;
+// }[keyof T];
+
+
+// type resolveEffectModuleFunc<T> = T extends (
+//   input: Promise<infer U>
+// ) => Promise<Action<infer V>>
+//   ? (input: U) => Action<V>
+//   : T extends (action: Action<infer U>) => Action<infer V>
+//   ? (action: U) => Action<V>
+//   : never;
 
 const connect: Connect = m => ({
   delay: (input: number) => ({
@@ -57,4 +63,4 @@ type Connected = {
   setMessage(action: Date): Action<number>;
 };
 
-export const connected: Connected = connect(new EffectModule());
+export const connected = connect(new EffectModule());

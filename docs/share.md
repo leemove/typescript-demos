@@ -223,7 +223,7 @@ type F5 = WarpRef<string[]>; // type F5 = Ref<any>
 
 # 类型推断 infer
 
-代码在线地址
+[代码在线地址](https://stackblitz.com/edit/typescript-7cbbg6?embed=1&file=infer.ts)
 
 `infer`关键字可以用在`extends`后,声明一个类型并用于推断. 目前必须使用三元表达式
 

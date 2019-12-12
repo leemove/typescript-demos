@@ -11,21 +11,24 @@ type A0 = ReturnType<Sub>; // number
 type A1 = ReturnType<DateFormat>; // string
 type A2 = ReturnType<AnyFunc>; // undefined
 
-interface Ref<T = any> {
+interface Ref<T> {
   _isRef: true;
   value: UnwrapRef<T>;
 }
 
-type CollectionTypes = IterableCollections | WeakCollections;
+
+
 
 type IterableCollections = Map<any, any> | Set<any>;
 type WeakCollections = WeakMap<any, any> | WeakSet<any>;
+type CollectionTypes = IterableCollections | WeakCollections;
+
 
 type UnwrapRef<T> = {
   ref: T extends Ref<infer V> ? UnwrapRef<V> : T;
   array: T extends Array<infer V> ? Array<UnwrapRef<V>> : T;
   object: { [K in keyof T]: UnwrapRef<T[K]> };
-}[T extends Ref
+}[T extends Ref<any>
   ? "ref"
   : T extends Array<any>
   ? "array"
